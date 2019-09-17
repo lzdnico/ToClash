@@ -129,7 +129,7 @@ def setPG(nodes):  # 设置策略组 auto,Fallback-auto,Proxy
     Apple = "- { name: 'Apple服务', type: select, proxies: "+" [\"手动切换\",\"DIRECT\"] }" +"\n"
     GlobalMedia = "- { name: '国际媒体', type: select, proxies: "+" [\"手动切换\"] }" +"\n"
     MainlandMedia = "- { name: '国内媒体', type: select, proxies: "+" [\"DIRECT\"] }" +"\n"
-    NF = "- { name: 'NF', type: select, proxies: "+" [\"V4 深港 02 PCCW阿里中转 1倍\"] }" +"\n"
+    NF = "- { name: 'NF', type: select, proxies: "+" [\"V4 深港 02 PCCW阿里中转 1倍\"] }" +"\n"   #NF查的严，常换iP会封号，自行替换一个固定的节点
     RejectWeb =  "- { name: '屏蔽网站', type: select, proxies: "+" [\"REJECT\",\"DIRECT\"] }" +"\n"
     ProxyGroup = ['\nProxy Group:\n',Proxy,ChooseMoethod,Apple,NF,GlobalMedia,MainlandMedia,RejectWeb]
     return ProxyGroup
