@@ -1,15 +1,17 @@
 Rule:
 # Apple
-- DOMAIN,hls.itunes.apple.com,Proxy
-- DOMAIN,itunes.apple.com,Proxy
-- DOMAIN-SUFFIX,digicert.com,DIRECT
+- DOMAIN-SUFFIX,apps.apple.com,Proxy
+- DOMAIN-SUFFIX,music.apple.com,DIRECT
 - DOMAIN-SUFFIX,icloud.com,DIRECT
 - DOMAIN-SUFFIX,icloud-content.com,DIRECT
+- DOMAIN-SUFFIX,me.com,DIRECT
 - DOMAIN-SUFFIX,mzstatic.com,DIRECT
 - DOMAIN-SUFFIX,akadns.net,DIRECT
 - DOMAIN-SUFFIX,aaplimg.com,DIRECT
 - DOMAIN-SUFFIX,cdn-apple.com,DIRECT
 - DOMAIN-SUFFIX,apple.com,DIRECT
+- DOMAIN-SUFFIX,apple-cloudkit.com,DIRECT
+- DOMAIN,hls.itunes.apple.com,Proxy
 #- DOMAIN,e.crashlytics.com,REJECT //注释此选项有助于大多数App开发者分析崩溃信息；如果您拒绝一切崩溃数据统计、搜集，请取消 # 注释。
 
 
@@ -109,6 +111,7 @@ Rule:
 - DOMAIN-SUFFIX,segmentfault.com,DIRECT
 - DOMAIN-SUFFIX,sinaapp.com,DIRECT
 - DOMAIN-SUFFIX,smzdm.com,DIRECT
+- DOMAIN-SUFFIX,snapdrop.net,DIRECT
 - DOMAIN-SUFFIX,sogou.com,DIRECT
 - DOMAIN-SUFFIX,sogoucdn.com,DIRECT
 - DOMAIN-SUFFIX,sohu.com,DIRECT
@@ -117,13 +120,14 @@ Rule:
 - DOMAIN-SUFFIX,sspai.com,DIRECT
 - DOMAIN-SUFFIX,suning.com,DIRECT
 - DOMAIN-SUFFIX,taobao.com,DIRECT
+- DOMAIN-SUFFIX,tencent.com,DIRECT
 - DOMAIN-SUFFIX,tenpay.com,DIRECT
+- DOMAIN-SUFFIX,tianyancha.com,DIRECT
 - DOMAIN-SUFFIX,tmall.com,DIRECT
 - DOMAIN-SUFFIX,tudou.com,DIRECT
 - DOMAIN-SUFFIX,umetrip.com,DIRECT
 - DOMAIN-SUFFIX,upaiyun.com,DIRECT
 - DOMAIN-SUFFIX,upyun.com,DIRECT
-- DOMAIN-SUFFIX,v2ex.com,DIRECT
 - DOMAIN-SUFFIX,veryzhun.com,DIRECT
 - DOMAIN-SUFFIX,weather.com,DIRECT
 - DOMAIN-SUFFIX,weibo.com,DIRECT
@@ -173,6 +177,7 @@ Rule:
 - DOMAIN-KEYWORD,dwtrack,REJECT
 - DOMAIN-KEYWORD,guanggao,REJECT
 - DOMAIN-KEYWORD,lianmeng,REJECT
+- DOMAIN-SUFFIX,mmstat.com,REJECT
 - DOMAIN-KEYWORD,omgmta,REJECT
 - DOMAIN-KEYWORD,openx,REJECT
 - DOMAIN-KEYWORD,partnerad,REJECT
@@ -292,6 +297,7 @@ Rule:
 - DOMAIN-SUFFIX,hockeyapp.net,Proxy
 - DOMAIN-SUFFIX,hotmail.com,Proxy
 - DOMAIN-SUFFIX,icons8.com,Proxy
+- DOMAIN-SUFFIX,ifixit.com,Proxy
 - DOMAIN-SUFFIX,ift.tt,Proxy
 - DOMAIN-SUFFIX,ifttt.com,Proxy
 - DOMAIN-SUFFIX,iherb.com,Proxy
@@ -420,6 +426,7 @@ Rule:
 - DOMAIN-SUFFIX,urchin.com,Proxy
 - DOMAIN-SUFFIX,usertrust.com,Proxy
 - DOMAIN-SUFFIX,v.gd,Proxy
+- DOMAIN-SUFFIX,v2ex.com,Proxy
 - DOMAIN-SUFFIX,vimeo.com,Proxy
 - DOMAIN-SUFFIX,vimeocdn.com,Proxy
 - DOMAIN-SUFFIX,vine.co,Proxy
