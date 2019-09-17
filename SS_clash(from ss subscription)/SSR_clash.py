@@ -124,21 +124,21 @@ def setPG(nodes):  # 设置策略组 auto,Fallback-auto,Proxy
 
     #Fallback = "- { name: 'Fallback-auto', type: fallback, proxies: " + str(proxy_names) + ", url: 'http://www.gstatic.com/generate_204', interval: 300 }\n"
         
-    Proxy = "- { name: '手动切换', type: select, proxies: " + str(proxy_names) + " }\n"
-    ChooseMoethod = "- { name: '选择模式', type: select, proxies: "+" [\"手动切换\",\"DIRECT\"] }" +"\n"
-    Apple = "- { name: 'Apple服务', type: select, proxies: "+" [\"手动切换\",\"DIRECT\"] }" +"\n"
-    GlobalMedia = "- { name: '国际媒体', type: select, proxies: "+" [\"手动切换\"] }" +"\n"
-    MainlandMedia = "- { name: '国内媒体', type: select, proxies: "+" [\"DIRECT\"] }" +"\n"
-    NF = "- { name: 'NF', type: select, proxies: "+" [\"V4 深港 02 PCCW阿里中转 1倍\"] }" +"\n"   #NF查的严，常换iP会封号，自行替换一个固定的节点
-    RejectWeb =  "- { name: '屏蔽网站', type: select, proxies: "+" [\"REJECT\",\"DIRECT\"] }" +"\n"
-    ProxyGroup = ['\nProxy Group:\n',Proxy,ChooseMoethod,Apple,NF,GlobalMedia,MainlandMedia,RejectWeb]
+    Proxy = "- { name: 'PROXY', type: select, proxies: " + str(proxy_names) + " }\n"
+    Apple = "- { name: 'Apple', type: select, proxies: "+" [\"PROXY\",\"DIRECT\"] }" +"\n"
+    GlobalMedia = "- { name: 'ForeignMedia', type: select, proxies: "+" [\"PROXY\"] }" +"\n"
+    MainlandMedia = "- { name: 'DomesticMedia', type: select, proxies: "+" [\"DIRECT\"] }" +"\n"
+    RejectWeb =  "- { name: 'Hijacking', type: select, proxies: "+" [\"REJECT\",\"DIRECT\"] }" +"\n"+"\n"+"\n"+"\n"+"\n"
+    Rule = "#规则"+"\n"+"Rule:"+"\n"
+    ProxyGroup = ['\nProxy Group:\n',Proxy,Apple,GlobalMedia,MainlandMedia,RejectWeb,Rule]
     return ProxyGroup
 
 
 def getClash(nodes):  #写文件
 
-    gener = getBasefile(
-        'https://raw.githubusercontent.com/lzdnico/ToClash/master/General.yml')
+    rules = getBasefile(
+        'https://raw.githubusercontent.com/ConnersHua/Profiles/master/Clash/Pro.yaml')
+    gener = rules.split('# 代理节点')[0]
     with codecs.open("./clash.yaml", "w",encoding = 'utf-8') as f:
         f.writelines(gener)
 
@@ -146,13 +146,14 @@ def getClash(nodes):  #写文件
     with codecs.open("./clash.yaml", "a",encoding = 'utf-8') as f:
         f.writelines(info)
 
-    rules = getBasefile(
-        'https://raw.githubusercontent.com/lzdnico/ToClash/master/rules.yml')
+    rule = rules.split('Rule:\n')[1].split('- MATCH,Final')[0]
     with codecs.open("./clash.yaml", "a",encoding = 'utf-8') as f:
-        f.writelines(rules)
+        f.writelines(rule)
+        f.writelines('- MATCH,PROXY')
 
 
 if __name__ == "__main__":
-    url = "你的订阅"         #替换订阅
+    #url = ""         #替换订阅
+    url = ""
     nodes = getAllNodes(url)
     getClash(nodes)
