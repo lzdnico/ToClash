@@ -1045,7 +1045,7 @@ Rule:
 - DOMAIN-KEYWORD,deepdyve,DIRECT
 - DOMAIN-KEYWORD,els-cdn,DIRECT
 ## 告别出版商绑架
-- DOMAIN-KEYWORD,sci-hub,Proxy
+- DOMAIN-KEYWORD,sci-hub,选择模式
 
 # > Baidu
 - DOMAIN-SUFFIX,baidu.com,DIRECT
