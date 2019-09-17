@@ -1,8 +1,4 @@
-#---------------------------------------------------#
-## 配置文件需要放置在 $HOME/.config/clash/config.yml
-## 
-#---------------------------------------------------#
-
+# 2019-07-01 12:00:00
 # HTTP 代理端口
 port: 7890
 
@@ -30,30 +26,41 @@ external-controller: 127.0.0.1:9090
 # external-ui: folder
 
 # RESTful API 的口令 (可选)
-secret: ""
+# secret: ""
 
+# DNS 设置
 dns:
   enable: true
-  ipv6: false
-  # listen: 0.0.0.0:53
-  # enhanced-mode: redir-host
+  listen: 0.0.0.0:53
+  enhanced-mode: fake-ip
   nameserver:
-     - 114.114.114.114
-     - 223.5.5.5
-     - tls://dns.rubyfish.cn:853
-     
-  fallback: # 与 nameserver 内的服务器列表同时发起请求，当规则符合 GEOIP 在 CN 以外时，fallback 列表内的域名服务器生效。
-     - tls://dns.rubyfish.cn:853
-     - tls://dns.google
+   - 119.29.29.29
+   - 223.5.5.5
 
-# clash DNS 请求逻辑：
-# (1) 当访问一个域名时， nameserver 与 fallback 列表内的所有服务器并发请求，得到域名对应的 IP 地址。
-# (2) clash 将选取 nameserver 列表内，解析最快的结果。
-# (3) 若解析结果中，IP 地址属于 国外，那么 clash 将选择 fallback 列表内，解析最快的结果。
-#
-# 因此，我在 nameserver 和 fallback 内都放置了无污染、解析速度较快的国内 DNS 服务器，以达到最快的解析速度。
-# 但是 fallback 列表内服务器会用在解析境外网站，为了结果绝对无污染，我仅保留了支持 DoT/DoH 的两个服务器。
-# 
-# 注意：
-# (1) 如果您为了确保 DNS 解析结果无污染，请仅保留列表内以 tls:// 开头的 DNS 服务器，但是通常对于国内没有太大必要。
-# (2) 如果您不在乎可能解析到污染的结果，更加追求速度。请将 nameserver 列表的服务器插入至 fallback 列表内，并移除重复项。
+# Clash for Windows
+cfw-bypass:
+  - qq.com
+  - music.163.com
+  - '*.music.126.net'
+  - localhost
+  - 127.*
+  - 10.*
+  - 172.16.*
+  - 172.17.*
+  - 172.18.*
+  - 172.19.*
+  - 172.20.*
+  - 172.21.*
+  - 172.22.*
+  - 172.23.*
+  - 172.24.*
+  - 172.25.*
+  - 172.26.*
+  - 172.27.*
+  - 172.28.*
+  - 172.29.*
+  - 172.30.*
+  - 172.31.*
+  - 192.168.*
+  - <local>
+cfw-latency-timeout: 5000
