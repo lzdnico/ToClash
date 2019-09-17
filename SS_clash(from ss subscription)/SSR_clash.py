@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 import requests
 import base64
+import codecs
 
 
 def getBasefile(url):  # 获取订阅链接加密文本
@@ -14,7 +15,7 @@ def getBasefile(url):  # 获取订阅链接加密文本
         return "错误"
 
 
-def getAllLinks(url):  # 从加密文本解析出所有ss链接
+def getAllLinks(url):  # 从加密文本解析出所有ssr链接
     links = getBasefile(url)
     result = decodeInfo(links)
     alllinks = result.split('\\n')
@@ -23,29 +24,23 @@ def getAllLinks(url):  # 从加密文本解析出所有ss链接
     return alllinks
 
 
-def getAllNodes(url):  # 从ss链接汇总得到所有节点信息
+def getAllNodes(url):  # 从ssr链接汇总得到所有节点信息
     allnodes = []
     links = getAllLinks(url)
     for ss in links:
         link = ss.split('//')[1].split("'")[0]
         # node = getNode(link) if ss.split(':')[0] == "ss" else getNodeR(link)
         if ss.split(':')[0] == "ss":
+            print('ss')
             node = getNode(link)
             allnodes.append(node)
         else:
+            print('ssr')
             node = getNodeR(link)
-            if checkNode(node):
-                node = node[:-2]
-                allnodes.append(node)
-            else:
-                continue
+            allnodes.append(node)
     return allnodes
 
 
-# def formatLink(link):
-#     l1 = link.replace('-', '+')
-#     l2 = l1.replace('_', '/')
-#     return l2
 
 
 def getNode(link):  # 从ss链接中得到节点信息
@@ -61,6 +56,7 @@ def getNode(link):  # 从ss链接中得到节点信息
 
 def getNodeR(link):  # 从ssr链接中得到节点信息
     info = decodeInfo(link)
+    #print (info)
     pwd = decodeInfo(info.split('/')[0].split(':')[-1]).split("'")[1]
     server = info.split(':')[0].split("'")[1]
     port = info.split(':')[1]
@@ -68,9 +64,10 @@ def getNodeR(link):  # 从ssr链接中得到节点信息
     method = info.split(':')[3]
     obfs = info.split(':')[4]
     remark = getName(info.split('&')[2].split('=')[1])
-
-    # print(server, port, method, pwd, protocol, obfs, remark)
-    node = [remark, server, port, method, pwd, protocol, obfs]
+    obfsparam = getName(info.split('&')[0].split('=')[-1])
+    proparam = getName(info.split('&')[1].split('=')[1])
+    node = [remark, server, port, method, pwd, protocol, obfs, proparam,obfsparam]
+    print (node)
     return node
 
 
@@ -87,27 +84,6 @@ def getName(info):  # 得到节点名称（有待合并）
     return result
 
 
-def checkNode(node):  # 检查节点是否是ss节点
-    obfs = node[6]
-    pro = node[5]
-    if checkObfs(obfs) and checkPro(pro):
-        return True
-    else:
-        return False
-
-
-def checkObfs(str):  # 检查是否为ss混淆
-    if str == "plain" or str.split('_')[-1] == "compatible":
-        return True
-    else:
-        return False
-
-
-def checkPro(str):  # 检查是否为ss协议
-    if str == "origin" or str.split('_')[-1] == "compatible":
-        return True
-    else:
-        return False
 
 
 def decodeInfo(info):  # 解码加密内容
@@ -122,7 +98,7 @@ def decodeInfo(info):  # 解码加密内容
     return result
 
 
-def setNodes(nodes):  # 设置节点
+def setNodes(nodes):  # 设置SSR节点
     proxies = []
     for node in nodes:
         name = node[0]
@@ -130,10 +106,11 @@ def setNodes(nodes):  # 设置节点
         port = node[2]
         cipher = node[3]
         pwd = node[4]
-        proxy = "- { name: " + str(
-            name).strip() + ", type: ss, server: " + str(
-                server) + ", port: " + str(port) + ", cipher: " + str(
-                    cipher) + ", password: " + str(pwd) + " }\n"
+        protocol = node[5]
+        obfs = node[6]
+        proparam = node[7]
+        obparam = node[8]
+        proxy = "- { name: " +"\"" +str(name).strip() +"\""+ ", type: ssr, server: " +"\""+ str(server)+"\"" + ", port: " +"\""+ str(port)+"\"" +", password: " +"\""+ str(pwd)+"\""+ ", cipher: " +"\""+ str(cipher)+"\""+", protocol: "+"\""+ str(protocol)+"\""+", protocolparam: " +"\""+ str(proparam)+"\""+", obfs: "+"\"" + str(obfs)+"\""+", obfsparam: " +"\""+ str(obparam)+"\""+" }\n"
         proxies.append(proxy)
     proxies.insert(0, '\nProxy:\n')
     return proxies
@@ -143,40 +120,39 @@ def setPG(nodes):  # 设置策略组 auto,Fallback-auto,Proxy
     proxy_names = []
     for node in nodes:
         proxy_names.append(node[0])
-    auto = "- { name: 'auto', type: url-test, proxies: " + str(
-        proxy_names
-    ) + ", url: 'http://www.gstatic.com/generate_204', interval: 300 }\n"
+    #auto = "- { name: \'auto\', type: url-test, proxies: " + str( proxy_names) + ", url: 'http://www.gstatic.com/generate_204', interval: 300 }\n"
 
-    Fallback = "- { name: 'Fallback-auto', type: fallback, proxies: " + str(
-        proxy_names
-    ) + ", url: 'http://www.gstatic.com/generate_204', interval: 300 }\n"
-
-    Proxy = "- { name: 'Proxy', type: select, proxies: " + str(
-        proxy_names) + " }\n"
-    ProxyGroup = ['\nProxy Group:\n', auto, Fallback, Proxy]
-    # ProxyGroup.insert(0, 'Proxy Group:\n')
+    #Fallback = "- { name: 'Fallback-auto', type: fallback, proxies: " + str(proxy_names) + ", url: 'http://www.gstatic.com/generate_204', interval: 300 }\n"
+        
+    Proxy = "- { name: '手动切换', type: select, proxies: " + str(proxy_names) + " }\n"
+    ChooseMoethod = "- { name: '选择模式', type: select, proxies: "+" [\"手动切换\",\"DIRECT\"] }" +"\n"
+    Apple = "- { name: 'Apple服务', type: select, proxies: "+" [\"手动切换\",\"DIRECT\"] }" +"\n"
+    GlobalMedia = "- { name: '国际媒体', type: select, proxies: "+" [\"手动切换\"] }" +"\n"
+    MainlandMedia = "- { name: '国内媒体', type: select, proxies: "+" [\"DIRECT\"] }" +"\n"
+    NF = "- { name: 'NF', type: select, proxies: "+" [\"V4 深港 02 PCCW阿里中转 1倍\"] }" +"\n"
+    RejectWeb =  "- { name: '屏蔽网站', type: select, proxies: "+" [\"REJECT\",\"DIRECT\"] }" +"\n"
+    ProxyGroup = ['\nProxy Group:\n',Proxy,ChooseMoethod,Apple,NF,GlobalMedia,MainlandMedia,RejectWeb]
     return ProxyGroup
 
 
-def getClash(nodes):
+def getClash(nodes):  #写文件
 
     gener = getBasefile(
-        'https://raw.githubusercontent.com/JRQLS/ToClash/master/General.yml')
-    with open("./clash.yml", "w") as f:
+        'https://raw.githubusercontent.com/lzdnico/ToClash/master/General.yml')
+    with codecs.open("./clash.yaml", "w",encoding = 'utf-8') as f:
         f.writelines(gener)
 
     info = setNodes(nodes) + setPG(nodes)
-    with open("./clash.yml", "a") as f:
+    with codecs.open("./clash.yaml", "a",encoding = 'utf-8') as f:
         f.writelines(info)
 
     rules = getBasefile(
-        'https://raw.githubusercontent.com/JRQLS/ToClash/master/rules.yml')
-    with open("./clash.yml", "a") as f:
+        'https://raw.githubusercontent.com/lzdnico/ToClash/master/rules.yml')
+    with codecs.open("./clash.yaml", "a",encoding = 'utf-8') as f:
         f.writelines(rules)
 
 
 if __name__ == "__main__":
-    url = "https://jumpc.xyz/link/6fhH5kh5safO9y"
+    url = "你的订阅"         #替换订阅
     nodes = getAllNodes(url)
-
     getClash(nodes)
